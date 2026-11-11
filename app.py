@@ -1,7 +1,9 @@
 """Prompt evaluation API. Run: pip install fastapi uvicorn; uvicorn app:app --reload"""
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel,Field
 app=FastAPI(title="GenAI Hackathon Copilot")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 class Eval(BaseModel):prompt:str=Field(min_length=5);response:str=Field(min_length=1);criteria:list[str]=Field(default_factory=lambda:["correctness","clarity","specificity"])
 @app.post("/evaluate")
 def evaluate(x:Eval):
